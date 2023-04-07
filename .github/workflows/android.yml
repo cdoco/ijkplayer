@@ -82,8 +82,7 @@ jobs:
       working-directory: android/ijkplayer
       run: |
         export ANDROID_NDK=$ANDROID_HOME/ndk/16.1.4479499/
-        ./gradlew build -PIJK_CXX_STL=c++_shared
-        ./gradlew assembleRelease -PIJK_CXX_STL=c++_shared
+        ./gradlew :fijkplayer-full:assembleRelease -PIJK_CXX_STL=c++_shared
 
     - name: Upload apk
       uses: actions/upload-artifact@v2

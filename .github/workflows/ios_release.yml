@@ -2,12 +2,12 @@ name: iOS Release
 
 on:
   push:
-    tags:
-      - 'f*'
+    branches:
+      - master
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-12
 
     steps:
     - uses: actions/checkout@v2
@@ -27,21 +27,9 @@ jobs:
       working-directory: ios/IJKMediaPlayer
       run: xcodebuild -project IJKMediaPlayer.xcodeproj -configuration Release -scheme Universal
 
-
-    - name: Extract tag name
-      id: tag
-      uses: actions/github-script@0.2.0
+    - name: Upload IJKMediaPlayer
+      uses: actions/upload-artifact@v2
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          return context.payload.ref.replace('refs/tags/', '');
-
-    - name: Create Release
-      id: create_release
-      uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: Release ${{ steps.tag.outputs.result }}
-        draft: false
-        artifacts: "./ios/CocoaPodsPub/IJKMediaPlayer.tar.gz"
-        allowUpdates: true
+        name: ijkdemo-release
+        path: |
+          ios/CocoaPodsPub/IJKMediaPlayer.tar.gz

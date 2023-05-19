@@ -305,7 +305,7 @@ int ff_media_player_msg_loop(void* arg)
     NSDictionary *mediaMeta = [self getMediaMeta];
     if (!mediaMeta)
         return nil;
-    
+
     NSArray *streamMetas = [mediaMeta objectForKey:kk_IJKM_KEY_STREAMS];
     if (!streamMetas)
         return nil;
@@ -332,23 +332,52 @@ int ff_media_player_msg_loop(void* arg)
         [track setObject:[NSNumber numberWithInt:trackType] forKey:k_IJKM_KEY_TYPE];
 
         // language
-        [track setObject:[streamMeta objectForKey:k_IJKM_KEY_LANGUAGE] forKey:k_IJKM_KEY_LANGUAGE];
+        NSString *language = [streamMeta objectForKey:k_IJKM_KEY_LANGUAGE];
+        [track setObject:[self getLanguage:language] forKey:k_IJKM_KEY_LANGUAGE];
 
         // info
         NSString *info = @"";
         NSString *codec_name = [streamMeta objectForKey:k_IJKM_KEY_CODEC_NAME]; // codec name
         NSString *bitrate = [streamMeta objectForKey:k_IJKM_KEY_BITRATE]; // bitrate
-        NSString *sample_rate = [streamMeta objectForKey:k_IJKM_KEY_SAMPLE_RATE]; // sample_rate
 
+        // add prefix
+        switch (trackType) {
+            case 1:
+                info = [info stringByAppendingString:@"VIDEO"];
+                break;
+            case 2:
+                info = [info stringByAppendingString:@"AUDIO"];
+                break;
+            case 3:
+                info = [info stringByAppendingString:@"TIMEDTEXT"];
+                break;
+            default:
+                break;
+        }
+
+        // add codec info
         if (codec_name) {
+            info = [info stringByAppendingString:@", "];
             info = [info stringByAppendingString:[self getCodecShortNameInline:codec_name]];
         }
 
+        // add bitrate info
         if (bitrate) {
             info = [info stringByAppendingString:@", "];
             info = [info stringByAppendingString:[self getBitrateInline:[bitrate longLongValue]]];
         }
-        if (sample_rate) {
+
+        // resolution only for video
+        NSNumber *width = [streamMeta objectForKey:k_IJKM_KEY_WIDTH];
+        NSNumber *height = [streamMeta objectForKey:k_IJKM_KEY_HEIGHT];
+        if (width && height && trackType == 1) {
+            info = [info stringByAppendingString:@", "];
+            info = [info stringByAppendingString:[NSString stringWithFormat:@"%@ x %@", width, height]];
+        }
+
+        // sample rate only for audio
+        NSString *sample_rate = [streamMeta objectForKey:k_IJKM_KEY_SAMPLE_RATE]; // sample_rate
+        if (sample_rate && trackType == 2) {
             info = [info stringByAppendingString:@", "];
             info = [info stringByAppendingString:[self getSampleRateInline:[sample_rate intValue]]];
         }
@@ -360,11 +389,15 @@ int ff_media_player_msg_loop(void* arg)
     return tracks;
 }
 
-- (NSString *)getCodecShortNameInline:(NSString *)mCodecName {
+- (NSString *) getLanguage:(NSString *) mLanguage {
+    return mLanguage.length > 0 ? mLanguage : @"und";
+}
+
+- (NSString *) getCodecShortNameInline:(NSString *) mCodecName {
     return mCodecName.length > 0 ? mCodecName : @"N/A";
 }
 
-- (NSString *)getBitrateInline:(long)mBitrate {
+- (NSString *) getBitrateInline:(long) mBitrate {
     if (mBitrate <= 0) {
         return @"N/A";
     } else {
@@ -376,7 +409,7 @@ int ff_media_player_msg_loop(void* arg)
     }
 }
 
-- (NSString *)getSampleRateInline:(int)mSampleRate {
+- (NSString *) getSampleRateInline:(int) mSampleRate {
     return mSampleRate <= 0 ? @"N/A" : [NSString stringWithFormat:@"%d Hz", mSampleRate];
 }
 
@@ -414,14 +447,14 @@ int ff_media_player_msg_loop(void* arg)
     return ijkmp_get_property_int64(_nativeMediaPlayer, property, value);
 }
 
-- (void)setPlaybackVolume:(float)volume
+- (void) setPlaybackVolume:(float)volume
 {
     if (!_nativeMediaPlayer)
         return;
     ijkmp_set_playback_volume(_nativeMediaPlayer, volume);
 }
 
-- (float)playbackVolume
+- (float) playbackVolume
 {
     if (!_nativeMediaPlayer)
         return 0.0f;
@@ -467,14 +500,14 @@ int ff_media_player_msg_loop(void* arg)
 }
 
 
-- (void)setOptionValue:(NSString *)value
+- (void) setOptionValue:(NSString *)value
                 forKey:(NSString *)key
             ofCategory:(IJKFFOptionCategory)category
 {
     ijkmp_set_option(_nativeMediaPlayer, category, [key UTF8String], [value UTF8String]);
 }
 
-- (void)setOptionIntValue:(int64_t)value
+- (void) setOptionIntValue:(int64_t)value
                    forKey:(NSString *)key
                ofCategory:(IJKFFOptionCategory)category
 {

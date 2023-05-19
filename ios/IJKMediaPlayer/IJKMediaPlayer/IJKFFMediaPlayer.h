@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, IJKMPEventType) {
     IJKMPET_BUFFERING_END           = 501,
     IJKMPET_BUFFERING_UPDATE        = 502,
     IJKMPET_CURRENT_POSITION_UPDATE = 510,
+    IJKMPET_SEEK_COMPLETE           = 600,
+    IJKMPET_TIMED_TEXT              = 800,
     IJKMPET_PLAYBACK_STATE_CHANGED  = 700,
 };
 
@@ -91,6 +93,10 @@ typedef void(^OnSnapshotBlock) (UIImage* __nullable image , NSError* __nullable 
 
 - (void) setupCVPixelBufferView:(id<IJKCVPBViewProtocol>) view;
 
+- (NSDictionary *) getMediaMeta;
+- (NSArray *) getTrackInfo;
+- (int64_t) getSelectedTrack:(int) trackType;
+- (void) selectTrack:(int) track;
 - (void) setStreamSelected:(int) stream selected:(BOOL) selected;
 
 - (float) getFloatProperty:(int) property defalut:(float) value;

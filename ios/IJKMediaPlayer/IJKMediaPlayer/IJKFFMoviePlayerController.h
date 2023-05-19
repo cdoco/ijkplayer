@@ -33,11 +33,13 @@
 #define k_IJKM_KEY_BITRATE        @"bitrate"
 
 // stream meta
-#define k_IJKM_KEY_TYPE           @"type"
-#define k_IJKM_VAL_TYPE__VIDEO    @"video"
-#define k_IJKM_VAL_TYPE__AUDIO    @"audio"
-#define k_IJKM_VAL_TYPE__UNKNOWN  @"unknown"
+#define k_IJKM_KEY_TYPE            @"type"
+#define k_IJKM_VAL_TYPE__VIDEO     @"video"
+#define k_IJKM_VAL_TYPE__AUDIO     @"audio"
+#define k_IJKM_VAL_TYPE__TIMEDTEXT @"timedtext"
+#define k_IJKM_VAL_TYPE__UNKNOWN   @"unknown"
 
+#define k_IJKM_KEY_LANGUAGE        @"language"
 #define k_IJKM_KEY_CODEC_NAME      @"codec_name"
 #define k_IJKM_KEY_CODEC_PROFILE   @"codec_profile"
 #define k_IJKM_KEY_CODEC_LONG_NAME @"codec_long_name"

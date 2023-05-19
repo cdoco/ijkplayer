@@ -5,5 +5,10 @@
         "**/ijkplayer-armv7a/**": true,
         "**/ijkplayer-x86/**": true,
         "**/ijkplayer-x86_64/**": true,
+    },
+    "files.associations": {
+        "__locale": "cpp",
+        "locale": "cpp",
+        "system_error": "cpp"
     }
 }

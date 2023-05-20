@@ -316,7 +316,7 @@ int ff_media_player_msg_loop(void* arg)
         if (!type)
             continue;
 
-        int trackType = -1;
+        int trackType = 0;
         if ([type isEqualToString:k_IJKM_VAL_TYPE__VIDEO]) {
             trackType = 1;
         } else if ([type isEqualToString:k_IJKM_VAL_TYPE__AUDIO]) {
@@ -351,7 +351,11 @@ int ff_media_player_msg_loop(void* arg)
             case 3:
                 info = [info stringByAppendingString:@"TIMEDTEXT"];
                 break;
+            case 4:
+                info = [info stringByAppendingString:@"SUBTITLE"];
+                break;
             default:
+                info = [info stringByAppendingString:@"UNKNOWN"];
                 break;
         }
 
@@ -380,6 +384,12 @@ int ff_media_player_msg_loop(void* arg)
         if (sample_rate && trackType == 2) {
             info = [info stringByAppendingString:@", "];
             info = [info stringByAppendingString:[self getSampleRateInline:[sample_rate intValue]]];
+        }
+
+        // timedtext language
+        if (trackType == 3) {
+            info = [info stringByAppendingString:@", "];
+            info = [info stringByAppendingString:[self getLanguage:language]];
         }
 
         [track setObject:info forKey:@"info"];

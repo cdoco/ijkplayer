@@ -57,6 +57,17 @@ void ijkmeta_reset(IjkMediaMeta *meta)
 {
     if (meta && meta->dict)
         av_dict_free(&meta->dict);
+    
+    if (meta && meta->children) {
+        for(size_t i = 0; i < meta->children_count; ++i) {
+            IjkMediaMeta *child = meta->children[i];
+            if (child) {
+                ijkmeta_destroy(child);
+            }
+        }
+        free(meta->children);
+        meta->children = NULL;
+    }
 }
 
 void ijkmeta_destroy(IjkMediaMeta *meta)

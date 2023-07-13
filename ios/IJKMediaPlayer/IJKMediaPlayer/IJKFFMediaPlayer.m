@@ -332,13 +332,13 @@ int ff_media_player_msg_loop(void* arg)
         // type
         [track setObject:[NSNumber numberWithInt:trackType] forKey:k_IJKM_KEY_TYPE];
 
+        // title
+        NSString *title = [streamMeta objectForKey:k_IJKM_KEY_TITLE];
+        [track setObject:[self getTitle:title] forKey:k_IJKM_KEY_TITLE];
+
         // language
         NSString *language = [streamMeta objectForKey:k_IJKM_KEY_LANGUAGE];
         [track setObject:[self getLanguage:language] forKey:k_IJKM_KEY_LANGUAGE];
-
-        // title
-        NSString *title = [streamMeta objectForKey:k_IJKM_KEY_TITLE];
-        [track setObject:title ? title : @"" forKey:k_IJKM_KEY_TITLE];
 
         // info
         NSString *info = @"";
@@ -402,6 +402,10 @@ int ff_media_player_msg_loop(void* arg)
     }
 
     return tracks;
+}
+
+- (NSString *) getTitle:(NSString *) mTitle {
+    return mTitle.length > 0 ? mTitle : @"und";
 }
 
 - (NSString *) getLanguage:(NSString *) mLanguage {

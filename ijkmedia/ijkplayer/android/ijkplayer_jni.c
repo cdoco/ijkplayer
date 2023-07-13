@@ -713,6 +713,7 @@ IjkMediaPlayer_getMediaMeta(JNIEnv *env, jobject thiz)
 
             fillMetaInternal(env, jstream_bundle, streamRawMeta, IJKM_KEY_TYPE,     IJKM_VAL_TYPE__UNKNOWN);
             fillMetaInternal(env, jstream_bundle, streamRawMeta, IJKM_KEY_LANGUAGE, NULL);
+            fillMetaInternal(env, jstream_bundle, streamRawMeta, IJKM_KEY_TITLE, NULL);
             const char *type = ijkmeta_get_string_l(streamRawMeta, IJKM_KEY_TYPE);
             if (type) {
                 fillMetaInternal(env, jstream_bundle, streamRawMeta, IJKM_KEY_CODEC_NAME, NULL );

@@ -267,6 +267,7 @@ int ff_media_player_msg_loop(void* arg)
         if (streamRawMeta) {
             fillMetaInternal(streamMeta, streamRawMeta, IJKM_KEY_TYPE, k_IJKM_VAL_TYPE__UNKNOWN);
             fillMetaInternal(streamMeta, streamRawMeta, IJKM_KEY_LANGUAGE, nil);
+            fillMetaInternal(streamMeta, streamRawMeta, IJKM_KEY_TITLE, nil);
 
             const char *type = ijkmeta_get_string_l(streamRawMeta, IJKM_KEY_TYPE);
             if (type) {
@@ -334,6 +335,10 @@ int ff_media_player_msg_loop(void* arg)
         // language
         NSString *language = [streamMeta objectForKey:k_IJKM_KEY_LANGUAGE];
         [track setObject:[self getLanguage:language] forKey:k_IJKM_KEY_LANGUAGE];
+
+        // title
+        NSString *title = [streamMeta objectForKey:k_IJKM_KEY_TITLE];
+        [track setObject:title ? title : @"" forKey:k_IJKM_KEY_TITLE];
 
         // info
         NSString *info = @"";

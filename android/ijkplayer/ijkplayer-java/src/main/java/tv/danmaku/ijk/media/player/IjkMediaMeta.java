@@ -24,6 +24,7 @@ public class IjkMediaMeta {
     public static final String IJKM_VAL_TYPE__TIMEDTEXT = "timedtext";
     public static final String IJKM_VAL_TYPE__UNKNOWN = "unknown";
     public static final String IJKM_KEY_LANGUAGE = "language";
+    public static final String IJKM_KEY_TITLE = "title";
 
     public static final String IJKM_KEY_CODEC_NAME = "codec_name";
     public static final String IJKM_KEY_CODEC_PROFILE = "codec_profile";
@@ -223,6 +224,7 @@ public class IjkMediaMeta {
             streamMeta.mMeta = streamBundle;
             streamMeta.mType = streamMeta.getString(IJKM_KEY_TYPE);
             streamMeta.mLanguage = streamMeta.getString(IJKM_KEY_LANGUAGE);
+            streamMeta.mTitle = streamMeta.getString(IJKM_KEY_TITLE);
             if (TextUtils.isEmpty(streamMeta.mType))
                 continue;
 
@@ -268,6 +270,7 @@ public class IjkMediaMeta {
         public final int mIndex;
         public String mType;
         public String mLanguage;
+        public String mTitle;
 
         // common
         public String mCodecName;

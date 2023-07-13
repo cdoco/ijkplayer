@@ -66,6 +66,12 @@ public class AndroidTrackInfo implements ITrackInfo {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
+    public String getTitle() {
+        return "und";
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
     public String getLanguage() {
         if (mTrackInfo == null)
             return "und";

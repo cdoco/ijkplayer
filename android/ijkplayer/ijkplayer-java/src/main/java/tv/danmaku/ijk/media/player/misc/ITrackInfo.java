@@ -27,6 +27,8 @@ public interface ITrackInfo {
 
     IMediaFormat getFormat();
 
+    String getTitle();
+
     String getLanguage();
 
     int getTrackType();

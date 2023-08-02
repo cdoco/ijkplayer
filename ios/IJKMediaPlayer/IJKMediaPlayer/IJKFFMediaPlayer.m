@@ -432,6 +432,10 @@ int ff_media_player_msg_loop(void* arg)
     return mSampleRate <= 0 ? @"N/A" : [NSString stringWithFormat:@"%d Hz", mSampleRate];
 }
 
+- (int64_t) getTcpSpeed {
+    return [self getLongProperty:FFP_PROP_INT64_TCP_SPEED default:0];
+}
+
 - (int64_t) getSelectedTrack:(int) trackType
 {
     switch(trackType) {
